@@ -10,9 +10,10 @@ material = "1.9.0"
 constraintlayout = "2.1.4"
 navigation-fragment-ktx = "2.6.0"
 navigation-ui-ktx = "2.6.0"
-firebase = "32.2.0"
+firebase = "32.2.2"
 google-services = "4.3.15"
 koin = "3.4.3"
+datastore = "1.0.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -27,6 +28,7 @@ navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx",
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+preferences-data-store = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
