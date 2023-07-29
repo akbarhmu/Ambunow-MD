@@ -1,4 +1,4 @@
-package braincore.megalogic.ambunow.presentation.ui.register
+package braincore.megalogic.ambunow.ui.features.auth.register
 
 import android.os.Bundle
 import android.view.LayoutInflater

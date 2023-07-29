@@ -1,4 +1,4 @@
-package braincore.megalogic.ambunow.presentation.ui.login
+package braincore.megalogic.ambunow.ui.features.auth
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

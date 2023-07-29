@@ -1,4 +1,4 @@
-package braincore.megalogic.ambunow.presentation.ui.splashscreen
+package braincore.megalogic.ambunow.ui.features.splashscreen
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,7 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import braincore.megalogic.ambunow.databinding.ActivitySplashScreenBinding
-import braincore.megalogic.ambunow.presentation.ui.login.AuthActivity
+import braincore.megalogic.ambunow.ui.features.auth.AuthActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel

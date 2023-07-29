@@ -1,4 +1,4 @@
-package braincore.megalogic.ambunow.presentation.ui.splashscreen
+package braincore.megalogic.ambunow.ui.features.splashscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
