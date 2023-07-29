@@ -1,12 +1,15 @@
 package braincore.megalogic.ambunow.presentation.ui.splashscreen
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import braincore.megalogic.ambunow.databinding.ActivitySplashScreenBinding
+import braincore.megalogic.ambunow.presentation.ui.login.AuthActivity
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,19 +35,36 @@ class SplashScreenActivity : AppCompatActivity() {
                         is SplashScreenState.Error -> {
 
                         }
-                        is SplashScreenState.NavigateToLogin -> {
 
+                        is SplashScreenState.NavigateToLogin -> {
+                            navigateToLogin()
                         }
+
                         is SplashScreenState.NavigateToUserMain -> {
 
                         }
+
                         is SplashScreenState.NavigateToDriverMain -> {
 
                         }
+
                         else -> {}
                     }
                 }
             }
         }
+    }
+
+    private suspend fun navigateToLogin() {
+        delay(SPLASH_DELAY)
+        val intent = Intent(this, AuthActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    companion object {
+        private const val SPLASH_DELAY = 2000L
     }
 }
