@@ -19,7 +19,7 @@ class UserDataStoreFactory(
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
-            scope = CoroutineScope((Dispatchers.IO + SupervisorJob())),
+            scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { context.preferencesDataStoreFile(USER_PREFERENCE_NAME) }
         )
     }
