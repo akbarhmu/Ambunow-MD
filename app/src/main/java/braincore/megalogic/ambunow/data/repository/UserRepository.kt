@@ -1,8 +1,8 @@
-package braincore.megalogic.core.data.repository
+package braincore.megalogic.ambunow.data.repository
 
 import android.util.Log
-import braincore.megalogic.core.data.source.Resource
-import braincore.megalogic.core.data.source.local.datasource.UserDataStore
+import braincore.megalogic.ambunow.data.source.Resource
+import braincore.megalogic.ambunow.data.source.local.datasource.UserDataStore
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

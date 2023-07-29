@@ -1,4 +1,4 @@
-package braincore.megalogic.core.data.source.local.datasource
+package braincore.megalogic.ambunow.data.source.local.datasource
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

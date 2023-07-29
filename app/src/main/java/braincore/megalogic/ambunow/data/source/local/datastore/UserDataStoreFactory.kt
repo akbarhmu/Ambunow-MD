@@ -1,4 +1,4 @@
-package braincore.megalogic.core.data.source.local.datastore
+package braincore.megalogic.ambunow.data.source.local.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

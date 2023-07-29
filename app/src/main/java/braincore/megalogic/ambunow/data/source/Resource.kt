@@ -1,4 +1,4 @@
-package braincore.megalogic.core.data.source
+package braincore.megalogic.ambunow.data.source
 
 sealed class Resource<out T> {
     data class Success<out T>(val data: T) : Resource<T>()

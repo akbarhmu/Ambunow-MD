@@ -1,8 +1,5 @@
-package braincore.megalogic.core.di
+package braincore.megalogic.ambunow.di
 
-import braincore.megalogic.core.data.repository.UserRepository
-import braincore.megalogic.core.data.source.local.datasource.UserDataStore
-import braincore.megalogic.core.data.source.local.datastore.UserDataStoreFactory
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +14,9 @@ object CoreModule {
     )
 
     private val locals = module {
-        single { UserDataStoreFactory(androidContext()).create() }
+        single { braincore.megalogic.ambunow.data.source.local.datastore.UserDataStoreFactory(
+            androidContext()
+        ).create() }
     }
 
     private val networks = module {
@@ -25,10 +24,16 @@ object CoreModule {
     }
 
     private val dataSources = module {
-        single { UserDataStore(get()) }
+        single { braincore.megalogic.ambunow.data.source.local.datasource.UserDataStore(get()) }
     }
 
     private val repositories = module {
-        single { UserRepository(get(), get(), Dispatchers.IO) }
+        single {
+            braincore.megalogic.ambunow.data.repository.UserRepository(
+                get(),
+                get(),
+                Dispatchers.IO
+            )
+        }
     }
 }

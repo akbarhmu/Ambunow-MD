@@ -1,4 +1,4 @@
-package braincore.megalogic.core.domain.model
+package braincore.megalogic.ambunow.model
 
 data class User(
     val userId: String,

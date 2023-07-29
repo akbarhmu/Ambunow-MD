@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.googleServices)
 }
 
 android {
@@ -40,7 +41,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -53,4 +53,11 @@ dependencies {
 
     // Koin
     implementation(libs.koin.android)
+
+    // Data Store
+    implementation(libs.preferences.data.store)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
 }
