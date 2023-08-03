@@ -10,10 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import braincore.megalogic.ambunow.R
 import braincore.megalogic.ambunow.data.source.Resource
 import braincore.megalogic.ambunow.databinding.FragmentLoginBinding
 import braincore.megalogic.ambunow.utils.hideSoftKeyboard
 import braincore.megalogic.ambunow.utils.isValidEmail
+import braincore.megalogic.ambunow.utils.spanTextPrimary
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -96,7 +98,12 @@ class LoginFragment : Fragment() {
 
                 viewModel.loginUser(email, password)
             }
-
+            spanTextPrimary(
+                textView = tvRegister,
+                text = getString(R.string.text_login_no_account),
+                start = 18,
+                bold = true
+            )
         }
     }
 

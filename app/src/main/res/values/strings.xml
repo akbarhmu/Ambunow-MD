@@ -60,5 +60,5 @@
     <string name="login_header_title">Selamat Datang</string>
     <string name="login_header_description">Masukkan email dan password dari akun yang pernah kamu buat sebelumnya</string>
     <string name="text_login_no_account">Belum punya akun? Daftar</string>
-    <string name="title_login">Login</string>
+    <string name="title_login">Masuk</string>
 </resources>
