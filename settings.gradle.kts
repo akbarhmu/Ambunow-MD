@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Ambunow"
 include(":app")
-include(":core")
