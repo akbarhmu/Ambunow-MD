@@ -1,6 +1,11 @@
 package braincore.megalogic.ambunow.di
 
+import braincore.megalogic.ambunow.data.repository.UserRepository
+import braincore.megalogic.ambunow.data.source.local.datasource.UserDataStore
+import braincore.megalogic.ambunow.data.source.local.datastore.UserDataStoreFactory
+import braincore.megalogic.ambunow.data.source.remote.datasource.AuthenticationDataSource
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -14,25 +19,27 @@ object CoreModule {
     )
 
     private val locals = module {
-        single { braincore.megalogic.ambunow.data.source.local.datastore.UserDataStoreFactory(
-            androidContext()
-        ).create() }
+        single {
+            UserDataStoreFactory(
+                androidContext()
+            ).create()
+        }
     }
 
     private val networks = module {
         single { FirebaseAuth.getInstance() }
+        single { FirebaseFirestore.getInstance() }
     }
 
     private val dataSources = module {
-        single { braincore.megalogic.ambunow.data.source.local.datasource.UserDataStore(get()) }
+        single { UserDataStore(get()) }
+        single { AuthenticationDataSource(get(), get()) }
     }
 
     private val repositories = module {
         single {
-            braincore.megalogic.ambunow.data.repository.UserRepository(
-                get(),
-                get(),
-                Dispatchers.IO
+            UserRepository(
+                get(), get(), get(), Dispatchers.IO
             )
         }
     }
