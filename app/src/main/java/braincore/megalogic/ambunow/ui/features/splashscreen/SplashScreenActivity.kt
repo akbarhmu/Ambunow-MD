@@ -17,7 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SplashScreenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashScreenBinding
-    private val viewModel: SplashScreenViewModel by viewModel()
+    //private val viewModel: SplashScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,29 +29,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun observeData() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.splashScreenState.collect {
-                    when (it) {
-                        is SplashScreenState.Error -> {
-
-                        }
-
-                        is SplashScreenState.NavigateToLogin -> {
-                            navigateToLogin()
-                        }
-
-                        is SplashScreenState.NavigateToUserMain -> {
-
-                        }
-
-                        is SplashScreenState.NavigateToDriverMain -> {
-
-                        }
-
-                        else -> {}
-                    }
-                }
-            }
+            navigateToLogin()
         }
     }
 

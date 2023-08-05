@@ -14,5 +14,21 @@
         android:id="@+id/loginFragment"
         android:name="braincore.megalogic.ambunow.ui.features.auth.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_errorBottomSheetFragment"
+            app:destination="@id/errorBottomSheetFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/errorBottomSheetFragment"
+        android:name="braincore.megalogic.ambunow.ui.features.bottom_sheets.ErrorBottomSheetFragment"
+        android:label="fragment_error_bottom_sheet"
+        tools:layout="@layout/fragment_error_bottom_sheet" >
+        <argument
+            android:name="message"
+            app:argType="string" />
+        <argument
+            android:name="animation"
+            app:argType="reference" />
+    </dialog>
 </navigation>

@@ -6,4 +6,12 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.googleServices) apply false
 }
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath(libs.navigation.safe.args.gradle.plugin)
+    }
+}
 true // Needed to make the Suppress annotation work for the plugins block

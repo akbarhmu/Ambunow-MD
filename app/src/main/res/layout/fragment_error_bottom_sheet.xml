@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="22dp"
+    tools:context=".ui.features.bottom_sheets.ErrorBottomSheetFragment">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/tv_error_title"
+        style="@style/TextAppearance.Material3.TitleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/maison_neue_bold"
+        android:text="@string/message_error_something_went_wrong"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_error_description"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/maison_neue_book"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        android:textSize="16sp"
+        tools:text="@tools:sample/lorem" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/maison_neue_demi"
+        android:padding="17dp"
+        android:text="@string/title_ok"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+</LinearLayout>
