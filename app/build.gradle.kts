@@ -68,4 +68,7 @@ dependencies {
 
     // Lottie
     implementation(libs.lottie.android)
+
+    // Logging
+    implementation(libs.timber)
 }

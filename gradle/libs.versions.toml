@@ -16,6 +16,7 @@ koin = "3.4.3"
 datastore = "1.0.0"
 retrofit = "2.9.0"
 lottie = "6.1.0"
+timber = "5.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -35,6 +36,7 @@ preferences-data-store = { group = "androidx.datastore", name = "datastore-prefe
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 lottie-android = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [bundles]
 retrofit = [ "retrofit-converter-gson" ]
