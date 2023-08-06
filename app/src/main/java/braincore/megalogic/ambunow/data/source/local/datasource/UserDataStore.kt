@@ -33,6 +33,18 @@ class UserDataStore(
         }
     }
 
+    suspend fun getUserId(): Flow<String> {
+        return dataStore.data.map {
+            it.toPreferences()[UserPreferenceKey.userId].orEmpty()
+        }
+    }
+
+    suspend fun setUserId(newUserId: String) {
+        dataStore.edit {
+            it[UserPreferenceKey.userId] = newUserId
+        }
+    }
+
     suspend fun clearData() {
         dataStore.edit { pref ->
             pref.clear()

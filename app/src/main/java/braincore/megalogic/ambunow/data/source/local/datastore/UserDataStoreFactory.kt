@@ -32,8 +32,10 @@ class UserDataStoreFactory(
 
 object UserPreferenceKey {
     val userObject = stringPreferencesKey(PreferenceKey.PREF_USER_OBJECT)
+    val userId = stringPreferencesKey(PreferenceKey.PREF_USER_ID)
 }
 
 object PreferenceKey {
     const val PREF_USER_OBJECT = "PREF_USER_OBJECT"
+    const val PREF_USER_ID = "PREF_USER_ID"
 }

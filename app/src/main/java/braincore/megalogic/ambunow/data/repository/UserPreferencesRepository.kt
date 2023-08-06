@@ -14,4 +14,8 @@ class UserPreferencesRepository(
     suspend fun setCurrentUser(user: RemoteUser): Flow<DataResource<Unit>> = flow {
         emit(proceed { dataSource.setCurrentUser(user) })
     }
+
+    suspend fun setUserId(userId: String): Flow<DataResource<Unit>> = flow {
+        emit(proceed { dataSource.setUserId(userId) })
+    }
 }
