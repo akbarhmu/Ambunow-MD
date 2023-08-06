@@ -1,5 +1,6 @@
 package braincore.megalogic.ambunow.ui.features.auth.login
 
+import android.content.Intent
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -8,8 +9,10 @@ import androidx.navigation.fragment.findNavController
 import braincore.megalogic.ambunow.R
 import braincore.megalogic.ambunow.base.BaseFragment
 import braincore.megalogic.ambunow.constant.LoginFieldConstants
+import braincore.megalogic.ambunow.constant.Role
 import braincore.megalogic.ambunow.databinding.FragmentLoginBinding
 import braincore.megalogic.ambunow.exception.FieldErrorException
+import braincore.megalogic.ambunow.ui.features.user.UserDashboard
 import braincore.megalogic.ambunow.utils.ext.getErrorAnimation
 import braincore.megalogic.ambunow.utils.ext.getErrorMessage
 import braincore.megalogic.ambunow.utils.ext.subscribe
@@ -48,6 +51,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
                     loginResult.subscribe(
                         doOnSuccess = {
                             showLoading(false)
+                            when (it.payload?.role) {
+                                Role.ADMIN -> {}
+                                Role.DRIVER -> {}
+                                else -> {
+                                    navigateToUserDashboard()
+                                }
+                            }
                         },
                         doOnError = {
                             showLoading(false)
@@ -55,10 +65,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
                                 handleFieldError(loginResult.exception)
                             } else {
                                 loginResult.exception?.let { e ->
-                                    val action = LoginFragmentDirections.actionLoginFragmentToErrorBottomSheetFragment(
-                                        requireContext().getErrorMessage(e),
-                                        getErrorAnimation(e)
-                                    )
+                                    val action =
+                                        LoginFragmentDirections.actionLoginFragmentToErrorBottomSheetFragment(
+                                            requireContext().getErrorMessage(e),
+                                            getErrorAnimation(e)
+                                        )
                                     findNavController().navigate(action)
                                 }
                             }
@@ -86,6 +97,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
 
     private fun showLoading(isShowLoading: Boolean) {
         binding.progressBar.isVisible = isShowLoading
+    }
+
+    private fun navigateToUserDashboard() {
+        val intent = Intent(requireContext(), UserDashboard::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        activity?.finish()
     }
 
     private fun resetField() {

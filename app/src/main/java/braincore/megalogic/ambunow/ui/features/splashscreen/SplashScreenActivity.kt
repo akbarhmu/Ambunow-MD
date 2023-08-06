@@ -10,6 +10,7 @@ import braincore.megalogic.ambunow.base.BaseActivity
 import braincore.megalogic.ambunow.constant.Role
 import braincore.megalogic.ambunow.databinding.ActivitySplashScreenBinding
 import braincore.megalogic.ambunow.ui.features.auth.AuthActivity
+import braincore.megalogic.ambunow.ui.features.user.UserDashboard
 import braincore.megalogic.ambunow.utils.ext.getErrorMessage
 import braincore.megalogic.ambunow.utils.ext.subscribe
 import kotlinx.coroutines.delay
@@ -35,7 +36,7 @@ class SplashScreenActivity :
                             when (response.payload.second?.role) {
                                 Role.ADMIN -> {}
                                 Role.DRIVER -> {}
-                                else -> {}
+                                else -> { lifecycleScope.launch { navigateToUserDashboard() } }
                             }
                         } else {
                             lifecycleScope.launch { navigateToLogin() }
@@ -55,6 +56,15 @@ class SplashScreenActivity :
     private suspend fun navigateToLogin() {
         delay(SPLASH_DELAY)
         val intent = Intent(this, AuthActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    private suspend fun navigateToUserDashboard() {
+        delay(SPLASH_DELAY)
+        val intent = Intent(this, UserDashboard::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)
