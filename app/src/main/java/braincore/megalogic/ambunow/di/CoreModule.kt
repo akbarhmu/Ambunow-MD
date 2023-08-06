@@ -9,6 +9,7 @@ import braincore.megalogic.ambunow.domain.LoginUserUseCase
 import braincore.megalogic.ambunow.domain.SaveAuthDataUseCase
 import braincore.megalogic.ambunow.domain.SyncUserUseCase
 import braincore.megalogic.ambunow.ui.features.auth.login.LoginViewModel
+import braincore.megalogic.ambunow.ui.features.splashscreen.SplashScreenViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
@@ -59,5 +60,6 @@ object CoreModule {
 
     private val viewModels = module {
         viewModelOf(::LoginViewModel)
+        viewModelOf(::SplashScreenViewModel)
     }
 }
