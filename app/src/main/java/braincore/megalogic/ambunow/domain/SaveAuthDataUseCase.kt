@@ -16,8 +16,9 @@ class SaveAuthDataUseCase(
     override suspend fun execute(param: RemoteUser?): Flow<ViewResource<Boolean>> = flow {
         param?.let {
             val saveUser = repository.setCurrentUser(it).first()
+            val saveUserId = repository.setUserId(it.userId).first()
 
-            if (saveUser is DataResource.Success) {
+            if (saveUser is DataResource.Success && saveUserId is DataResource.Success) {
                 emit(ViewResource.Success(true))
             } else {
                 emit(ViewResource.Error(IllegalStateException("Failed to save local data.")))
