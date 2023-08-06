@@ -7,7 +7,7 @@ import braincore.megalogic.ambunow.exception.InvalidCredentialsException
 import braincore.megalogic.ambunow.exception.InvalidUserException
 import braincore.megalogic.ambunow.exception.NoInternetConnectionException
 
-fun Context.getErrorMessage(exception: Exception): String {
+fun Context.getErrorMessage(exception: Exception?): String {
     return when (exception) {
         is NoInternetConnectionException -> getString(R.string.message_error_no_internet)
         is InvalidCredentialsException -> getString(R.string.message_error_invalid_credentials)
@@ -17,7 +17,7 @@ fun Context.getErrorMessage(exception: Exception): String {
 }
 
 @IdRes
-fun getErrorAnimation(exception: Exception): Int {
+fun getErrorAnimation(exception: Exception?): Int {
     return when (exception) {
         is NoInternetConnectionException -> R.raw.animation_no_internet
         is InvalidCredentialsException -> R.raw.animation_error_authentication

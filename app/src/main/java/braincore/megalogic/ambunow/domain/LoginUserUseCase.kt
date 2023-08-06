@@ -1,6 +1,5 @@
 package braincore.megalogic.ambunow.domain
 
-import android.util.Log
 import braincore.megalogic.ambunow.base.BaseUseCase
 import braincore.megalogic.ambunow.data.repository.AuthenticationRepository
 import braincore.megalogic.ambunow.data.source.remote.model.toViewParam
@@ -11,6 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class LoginUserUseCase(
     private val checkLoginFieldUseCase: CheckLoginFieldUseCase,
@@ -27,34 +27,46 @@ class LoginUserUseCase(
                     repository.loginUser(param.email, param.password).collect { authResult ->
                         authResult.suspendSubscribe(doOnSuccess = {
                             val user = authResult.payload?.user
+                            Timber.tag("LoginUserUseCase")
+                                .d("Success to login user ${user?.uid.toString()}.")
                             user?.let {
                                 repository.getUserData(it.uid).collect { userDataResult ->
                                     userDataResult.suspendSubscribe(doOnSuccess = {
                                         val userData = userDataResult.payload
                                         if (userData != null) {
+                                            Timber.tag("LoginUserUseCase").d("User data: $userData")
                                             saveAuthDataUseCase(userData).collect { saveAuthResult ->
                                                 saveAuthResult.suspendSubscribe(doOnSuccess = {
+                                                    Timber.tag("LoginUserUseCase")
+                                                        .d("User data saved")
                                                     emit(
                                                         ViewResource.Success(
                                                             userData.toViewParam()
                                                         )
                                                     )
                                                 }, doOnError = { error ->
+                                                    Timber.tag("").e("Failed to save user data")
+                                                    Timber.tag("LoginUserUseCase")
+                                                        .e(error.exception)
                                                     emit(ViewResource.Error(error.exception))
                                                 })
                                             }
                                         }
                                     }, doOnError = { error ->
+                                        Timber.tag("LoginUserUseCase").e("Failed to get user data")
+                                        Timber.tag("LoginUserUseCase").e(error.exception)
                                         emit(ViewResource.Error(error.exception))
                                     })
                                 }
                             }
                         }, doOnError = { error ->
+                            Timber.tag("LoginUserUseCase").e("Failed to login user.")
+                            Timber.tag("LoginUserUseCase").e(error.exception)
                             emit(ViewResource.Error(error.exception))
                         })
                     }
                 }, doOnError = { error ->
-                    Log.e("checkLoginFieldUseCase", "${error.exception}")
+                    Timber.tag("LoginUserUseCase").e("Failed to check login field.")
                     emit(ViewResource.Error(error.exception))
                 })
             } ?: throw IllegalArgumentException("Param is required.")

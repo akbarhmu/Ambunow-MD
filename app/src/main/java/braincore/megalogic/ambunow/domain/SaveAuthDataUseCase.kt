@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 class SaveAuthDataUseCase(
     private val repository: UserPreferencesRepository, dispatcher: CoroutineDispatcher
@@ -19,8 +20,10 @@ class SaveAuthDataUseCase(
             val saveUserId = repository.setUserId(it.userId).first()
 
             if (saveUser is DataResource.Success && saveUserId is DataResource.Success) {
+                Timber.tag("SaveAuthDataUseCase").d("Success save local data")
                 emit(ViewResource.Success(true))
             } else {
+                Timber.tag("SaveAuthDataUseCase").e("Failed to save local data.")
                 emit(ViewResource.Error(IllegalStateException("Failed to save local data.")))
             }
         }

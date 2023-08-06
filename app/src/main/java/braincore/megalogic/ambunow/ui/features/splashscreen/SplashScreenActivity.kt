@@ -10,6 +10,7 @@ import braincore.megalogic.ambunow.base.BaseActivity
 import braincore.megalogic.ambunow.constant.Role
 import braincore.megalogic.ambunow.databinding.ActivitySplashScreenBinding
 import braincore.megalogic.ambunow.ui.features.auth.AuthActivity
+import braincore.megalogic.ambunow.utils.ext.getErrorMessage
 import braincore.megalogic.ambunow.utils.ext.subscribe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,7 +43,7 @@ class SplashScreenActivity :
                     }, doOnError = { error ->
                         Toast.makeText(
                             this@SplashScreenActivity,
-                            error.exception?.message,
+                            getErrorMessage(error.exception),
                             Toast.LENGTH_SHORT
                         ).show()
                     })
