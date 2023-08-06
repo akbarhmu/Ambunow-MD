@@ -1,111 +1,117 @@
 package braincore.megalogic.ambunow.ui.features.auth.login
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
+import android.content.Intent
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import braincore.megalogic.ambunow.data.source.Resource
+import androidx.navigation.fragment.findNavController
+import braincore.megalogic.ambunow.R
+import braincore.megalogic.ambunow.base.BaseFragment
+import braincore.megalogic.ambunow.constant.LoginFieldConstants
+import braincore.megalogic.ambunow.constant.Role
 import braincore.megalogic.ambunow.databinding.FragmentLoginBinding
-import braincore.megalogic.ambunow.utils.hideSoftKeyboard
-import braincore.megalogic.ambunow.utils.isValidEmail
+import braincore.megalogic.ambunow.exception.FieldErrorException
+import braincore.megalogic.ambunow.ui.features.user.UserDashboard
+import braincore.megalogic.ambunow.utils.ext.getErrorAnimation
+import braincore.megalogic.ambunow.utils.ext.getErrorMessage
+import braincore.megalogic.ambunow.utils.ext.subscribe
+import braincore.megalogic.ambunow.utils.spanTextPrimary
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>(
+    FragmentLoginBinding::inflate
+) {
+    override val viewModel: LoginViewModel by viewModel()
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: LoginViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initView()
-        observeData()
-    }
-
-    private fun observeData() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginResult.collect {
-                    handleData(it)
-                }
-            }
-        }
-    }
-
-    private fun handleData(it: Any) {
-        resetView()
-        when (it) {
-            is Resource.Success<*> -> {
-                // TODO: Check role, Redirect to home
-            }
-
-            is Resource.Error -> {
-                showError(it.message)
-            }
-
-            is Resource.Loading -> {
-                showLoading(true)
-            }
-        }
-    }
-
-    private fun resetView() {
-        showLoading(false)
-    }
-
-    private fun showLoading(isLoading: Boolean) {
+    override fun initView() {
         binding.apply {
-            progressBar.isVisible = isLoading
-            inputEmail.isEnabled = !isLoading
-            inputPassword.isEnabled = !isLoading
-            btnLogin.isEnabled = !isLoading
-        }
-    }
-
-    private fun initView() {
-        binding.apply {
+            spanTextPrimary(
+                textView = tvRegister,
+                text = getString(R.string.text_login_no_account),
+                start = 18,
+                bold = true
+            )
             btnLogin.setOnClickListener {
-                hideSoftKeyboard()
-                val email = inputEmail.editText?.text.toString()
-                val password = inputPassword.editText?.text.toString()
-
-                // Validation
-                if (email.isEmpty() || password.isEmpty()) {
-                    showError("Email or password cannot be empty")
-                    return@setOnClickListener
-                }
-                if (!email.isValidEmail()) {
-                    showError("Email is not valid")
-                    return@setOnClickListener
-                }
-
-                viewModel.loginUser(email, password)
+                viewModel.loginUser(
+                    inputEmail.editText?.text.toString(),
+                    inputPassword.editText?.text.toString()
+                )
             }
-
         }
     }
 
-    private fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    override fun observeData() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.loginResult.collect { loginResult ->
+                    resetField()
+                    loginResult.subscribe(
+                        doOnSuccess = {
+                            showLoading(false)
+                            when (it.payload?.role) {
+                                Role.ADMIN -> {}
+                                Role.DRIVER -> {}
+                                else -> {
+                                    navigateToUserDashboard()
+                                }
+                            }
+                        },
+                        doOnError = {
+                            showLoading(false)
+                            if (loginResult.exception is FieldErrorException) {
+                                handleFieldError(loginResult.exception)
+                            } else {
+                                loginResult.exception?.let { e ->
+                                    val action =
+                                        LoginFragmentDirections.actionLoginFragmentToErrorBottomSheetFragment(
+                                            requireContext().getErrorMessage(e),
+                                            getErrorAnimation(e)
+                                        )
+                                    findNavController().navigate(action)
+                                }
+                            }
+                        },
+                        doOnLoading = {
+                            showLoading(true)
+                        }
+                    )
+                }
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun handleFieldError(exception: FieldErrorException) {
+        exception.errorFields.forEach { errorField ->
+            if (errorField.first == LoginFieldConstants.FIELD_EMAIL) {
+                binding.inputEmail.error = getString(errorField.second)
+            }
+            if (errorField.first == LoginFieldConstants.FIELD_PASSWORD) {
+                binding.inputPassword.endIconMode = TextInputLayout.END_ICON_NONE
+                binding.inputPassword.error = getString(errorField.second)
+            }
+        }
     }
+
+    private fun showLoading(isShowLoading: Boolean) {
+        binding.progressBar.isVisible = isShowLoading
+    }
+
+    private fun navigateToUserDashboard() {
+        val intent = Intent(requireContext(), UserDashboard::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        activity?.finish()
+    }
+
+    private fun resetField() {
+        showLoading(false)
+        binding.inputPassword.isErrorEnabled = false
+        binding.inputEmail.isErrorEnabled = false
+        binding.inputPassword.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+    }
+
 }

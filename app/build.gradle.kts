@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.googleServices)
+    id(libs.plugins.navigationSafeArgs.get().pluginId)
 }
 
 android {
@@ -61,4 +62,13 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
+
+    // Retrofit
+    implementation(libs.bundles.retrofit)
+
+    // Lottie
+    implementation(libs.lottie.android)
+
+    // Logging
+    implementation(libs.timber)
 }

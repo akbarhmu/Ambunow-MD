@@ -2,54 +2,52 @@ package braincore.megalogic.ambunow.ui.features.splashscreen
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import braincore.megalogic.ambunow.base.BaseActivity
+import braincore.megalogic.ambunow.constant.Role
 import braincore.megalogic.ambunow.databinding.ActivitySplashScreenBinding
 import braincore.megalogic.ambunow.ui.features.auth.AuthActivity
+import braincore.megalogic.ambunow.ui.features.user.UserDashboard
+import braincore.megalogic.ambunow.utils.ext.getErrorMessage
+import braincore.megalogic.ambunow.utils.ext.subscribe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreenActivity : AppCompatActivity() {
+class SplashScreenActivity :
+    BaseActivity<ActivitySplashScreenBinding, SplashScreenViewModel>(ActivitySplashScreenBinding::inflate) {
 
-    private lateinit var binding: ActivitySplashScreenBinding
-    private val viewModel: SplashScreenViewModel by viewModel()
+    override val viewModel: SplashScreenViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        observeData()
+    override fun initView() {
+        viewModel.syncUser()
     }
 
-    private fun observeData() {
+    override fun observeData() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.splashScreenState.collect {
-                    when (it) {
-                        is SplashScreenState.Error -> {
-
+                viewModel.syncResult.collect {
+                    it.subscribe(doOnSuccess = { response ->
+                        if (response.payload?.first == true) {
+                            when (response.payload.second?.role) {
+                                Role.ADMIN -> {}
+                                Role.DRIVER -> {}
+                                else -> { lifecycleScope.launch { navigateToUserDashboard() } }
+                            }
+                        } else {
+                            lifecycleScope.launch { navigateToLogin() }
                         }
-
-                        is SplashScreenState.NavigateToLogin -> {
-                            navigateToLogin()
-                        }
-
-                        is SplashScreenState.NavigateToUserMain -> {
-
-                        }
-
-                        is SplashScreenState.NavigateToDriverMain -> {
-
-                        }
-
-                        else -> {}
-                    }
+                    }, doOnError = { error ->
+                        Toast.makeText(
+                            this@SplashScreenActivity,
+                            getErrorMessage(error.exception),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
                 }
             }
         }
@@ -58,6 +56,15 @@ class SplashScreenActivity : AppCompatActivity() {
     private suspend fun navigateToLogin() {
         delay(SPLASH_DELAY)
         val intent = Intent(this, AuthActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    private suspend fun navigateToUserDashboard() {
+        delay(SPLASH_DELAY)
+        val intent = Intent(this, UserDashboard::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         startActivity(intent)

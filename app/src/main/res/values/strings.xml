@@ -60,5 +60,14 @@
     <string name="login_header_title">Selamat Datang</string>
     <string name="login_header_description">Masukkan email dan password dari akun yang pernah kamu buat sebelumnya</string>
     <string name="text_login_no_account">Belum punya akun? Daftar</string>
-    <string name="title_login">Login</string>
+    <string name="title_login">Masuk</string>
+    <string name="error_field_password">Kata sandi wajib diisi</string>
+    <string name="error_field_email">Alamat email wajib diisi</string>
+    <string name="error_field_email_not_valid">Alamat email harus berupa alamat yang valid</string>
+    <string name="message_error_no_internet">Ada yang salah dengan koneksi internet. Pastikan Anda memiliki Sambungan Internet dan coba lagi.</string>
+    <string name="message_error_unknown">Terjadi kesalahan. Silakan coba lagi.</string>
+    <string name="message_error_invalid_credentials">Kata sandi yang Anda masukkan salah. Silakan coba lagi.</string>
+    <string name="message_error_invalid_user">Kredensial yang Anda masukkan tidak valid. Silakan periksa kembali alamat email dan kata sandi Anda, dan coba lagi.</string>
+    <string name="title_ok">Okay</string>
+    <string name="message_error_something_went_wrong">Ups, terjadi kesalahan!</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,4 +28,14 @@ class UserDataStoreFactory(
     companion object {
         private const val USER_PREFERENCE_NAME = "user_preference"
     }
+}
+
+object UserPreferenceKey {
+    val userObject = stringPreferencesKey(PreferenceKey.PREF_USER_OBJECT)
+    val userId = stringPreferencesKey(PreferenceKey.PREF_USER_ID)
+}
+
+object PreferenceKey {
+    const val PREF_USER_OBJECT = "PREF_USER_OBJECT"
+    const val PREF_USER_ID = "PREF_USER_ID"
 }
