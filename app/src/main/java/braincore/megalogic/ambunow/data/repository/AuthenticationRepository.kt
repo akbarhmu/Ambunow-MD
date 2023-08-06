@@ -7,6 +7,7 @@ import braincore.megalogic.ambunow.utils.COLLECTION_USERS
 import braincore.megalogic.ambunow.utils.await
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,7 +28,12 @@ class AuthenticationRepository(
         }
     }
 
-    suspend fun isUserLoggedIn(): Flow<DataResource<Boolean>> = flow {
-        emit(safeFirebaseAuthCall { firebaseAuth.currentUser != null })
+    suspend fun isUserLoggedIn(): Flow<DataResource<Pair<Boolean, String>>> = flow {
+        emit(
+            safeFirebaseAuthCall {
+                val result = firebaseAuth.currentUser
+                Pair(result != null, result?.uid.orEmpty())
+            }
+        )
     }
 }

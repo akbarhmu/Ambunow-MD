@@ -7,6 +7,7 @@ import braincore.megalogic.ambunow.data.source.local.datastore.UserDataStoreFact
 import braincore.megalogic.ambunow.domain.CheckLoginFieldUseCase
 import braincore.megalogic.ambunow.domain.LoginUserUseCase
 import braincore.megalogic.ambunow.domain.SaveAuthDataUseCase
+import braincore.megalogic.ambunow.domain.SyncUserUseCase
 import braincore.megalogic.ambunow.ui.features.auth.login.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -53,6 +54,7 @@ object CoreModule {
         single { SaveAuthDataUseCase(get(), Dispatchers.IO) }
         single { LoginUserUseCase(get(), get(), get(), Dispatchers.IO) }
         single { CheckLoginFieldUseCase(Dispatchers.IO) }
+        single { SyncUserUseCase(get(), get(), Dispatchers.IO) }
     }
 
     private val viewModels = module {
