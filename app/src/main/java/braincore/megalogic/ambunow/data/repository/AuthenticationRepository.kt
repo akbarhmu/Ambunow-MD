@@ -26,4 +26,8 @@ class AuthenticationRepository(
             emit(safeFirebaseAuthCall { firebaseFirestore.collection(COLLECTION_USERS).document(userId).get().await().toObject(RemoteUser::class.java)!! })
         }
     }
+
+    suspend fun isUserLoggedIn(): Flow<DataResource<Boolean>> = flow {
+        emit(safeFirebaseAuthCall { firebaseAuth.currentUser != null })
+    }
 }
